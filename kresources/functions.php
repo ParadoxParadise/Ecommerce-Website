@@ -128,32 +128,32 @@ if($page == 1){
      $middleNumbers .= '<li class="page-item active"><a>' .$page. '</a></li>';
      $middleNumbers .= '<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$add1.'">' .$add1. '</a></li>';
 }
-// This line sets the "LIMIT" range... the 2 values we place to choose a range of rows from database in our query
+
 $limit = 'LIMIT ' . ($page-1) * $perPage . ',' . $perPage;
-// $query2 is what we will use to to display products with out $limit variable
+// $query2 is what i will use to to display products with out $limit variable
 $query2 = query(" SELECT * FROM products $limit");
 confirm($query2);
-$outputPagination = ""; // Initialize the pagination output variable
+$outputPagination = ""; 
 // if($lastPage != 1){
 //    echo "Page $page of $lastPage";
 // }
- // If we are not on page one we place the back link
+
 
 if($page != 1){
     $prev  = $page - 1;
     $outputPagination .='<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$prev.'">Back</a></li>';
 }
- // Lets append all our links to this variable that we can use this output pagination
+
 
 $outputPagination .= $middleNumbers;
-// If we are not on the very last page we the place the next link
+
 
 if($page != $lastPage){
     $next = $page + 1;
     $outputPagination .='<li class="page-item"><a class="page-link" href="'.$_SERVER['PHP_SELF'].'?page='.$next.'">Next</a></li>';
 }
-// Done with pagination
-// Remember we use query 2 below :)
+
+
 
 //************************************Pagination Finished******************************************************************
 
@@ -163,14 +163,21 @@ $product_photo = display_images($row['product_image']);
 $products = <<< DELIMETER
 <div class="col-sm-4 col-lg-4 col-md-4">
     <div class="thumbnail">
-        <a target="_blank" href="item.php?id={$row['product_id']}" ><img width ='100' src="../kresources/{$product_photo}" alt=""></a>
-            <div class="caption">
-                <h4 class="pull-right">&#165;{$row['product_price']}</h4>
-               <h4> <a target="_blank" href="item.php?id={$row['product_id']}" >{$row['product_title']}</a></h4>
-                 <p>{$row['product_description']}.</p>
-                 </div> <a class="btn btn-primary" target="_blank" href="..\kresources\cart.php?add={$row['product_id']}" text-align:center>Add To Cart</a> </div>
- </div>
+        <a target="_blank" href="item.php?id={$row['product_id']}"><img width="100" src="../kresources/{$product_photo}" alt=""></a>
+        <div class="caption">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="flex-grow: 1; margin-right: 10px;">
+                    <a target="_blank" href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
+                </h4>
+                <h4 style="white-space: nowrap; margin: 0;">&#36;{$row['product_price']}</h4>
+            </div>
+            <p>{$row['product_description']}.</p>
+        </div>
+        <a class="btn btn-primary" target="_blank" href="..\kresources\cart.php?add={$row['product_id']}" style="display: block; text-align: center;">Thêm vào giỏ hàng</a>
+    </div>
+</div>
 DELIMETER;
+
 echo $products;
     }
     echo "<div class='text-center'><ul class='pagination'>{$outputPagination}</ul></div>";
@@ -196,54 +203,53 @@ echo $category_links;
 //getting products in same category
 ///unfinished work need patching on buy now
 function get_products_in_category_page(){
-$query = query("SELECT * FROM products WHERE product_category_id=".escape_string($_GET['id'])." ");     
-confirm($query);
-while($row = fetch_array($query)) {
-$product_photo = display_images($row['product_image']);
-$category_page = <<< DELIMETER
- <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="../kresources/{$product_photo}" alt="">
-                    <div class="caption">
-                        <h3>{$row['product_title'] }</h3>
-                        <p>{$row['short_desc'] }</p>
-                        <p>
-                            <a href="..\kresources\cart.php?add={$row['product_id']}" class="btn btn-primary">Buy Now!</a> <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
+    $query = query("SELECT * FROM products WHERE product_category_id=".escape_string($_GET['id'])." ");     
+    confirm($query);
+    while($row = fetch_array($query)) {
+        $product_photo = display_images($row['product_image']);
+        $category_page = <<< DELIMETER
+        <div class="col-md-3 col-sm-6 hero-feature">
+            <div class="thumbnail product-item">
+                <img src="../kresources/{$product_photo}" alt="">
+                <div class="caption product-content">
+                    <h3>{$row['product_title'] }</h3>
+                    <p class="product-description">{$row['short_desc'] }</p>
+                </div>
+                <div class="product-buttons">
+                    <a href="..\kresources\cart.php?add={$row['product_id']}" class="btn btn-primary">Mua ngay!</a>
+                    <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
                 </div>
             </div>
+        </div>
 DELIMETER;
-echo $category_page;         
+        echo $category_page;         
+    }
 }
-}
-//#########################################
 
-//#######################################
-//getting products in same category
-///unfinished work need patching on buy now
 function get_products_in_shop_page(){
-$query = query("SELECT * FROM products ");     
-confirm($query);
-while($row = fetch_array($query)) {
-$product_photo = display_images($row['product_image']);
-$category_page = <<< DELIMETER
- <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="../kresources/{$product_photo}" alt="">
-                    <div class="caption">
-                        <h3>{$row['product_title'] }</h3>
-                        <p>{$row['short_desc'] }</p>
-                        <p>
-                            <a href="..\kresources\cart.php?add={$row['product_id']}" class="btn btn-primary">Buy Now!</a> <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
+    $query = query("SELECT * FROM products ");     
+    confirm($query);
+    while($row = fetch_array($query)) {
+        $product_photo = display_images($row['product_image']);
+        $category_page = <<< DELIMETER
+        <div class="col-md-3 col-sm-6 hero-feature">
+            <div class="thumbnail product-item">
+                <img src="../kresources/{$product_photo}" alt="">
+                <div class="caption product-content">
+                    <h3>{$row['product_title'] }</h3>
+                    <p class="product-description">{$row['short_desc'] }</p>
+                </div>
+                <div class="product-buttons">
+                    <a href="..\kresources\cart.php?add={$row['product_id']}" class="btn btn-primary">Mua ngay!</a>
+                    <a href="item.php?id={$row['product_id']}" class="btn btn-default">Thêm thông tin</a>
                 </div>
             </div>
+        </div>
 DELIMETER;
-echo $category_page;         
+        echo $category_page;         
+    }
 }
-}
+
 //#########################################
 
 //#######################################
@@ -284,7 +290,7 @@ function user_name(){
 function send_message (){
     ///Not fully function need for correction in sendmail.ini and in php.ini(setting in XAMPP)
     if(isset($_POST['submit'])){
-         $to           = "muzurotenday@gmail.com";
+         $to           = "hungtu123x@gmail.com";
          $from_name    = ($_POST['name']);
          $from_email   = ($_POST['email']);
          $from_subject = ($_POST['subject']);
@@ -368,7 +374,7 @@ $products = <<< DELIMETER
             <td> {$row['product_id']}</td>
             <td><a href="index.php?edit_product&id={$row['product_id']}"><p>{$row['product_title']}</p></a><div><img width='100' src="../../kresources/uploads/{$product_photo}" alt=""></div></td>
             <td>{$category}</td>
-            <td>&#165;{$row['product_price']}</td>
+            <td>&#36;{$row['product_price']}</td>
             <td>{$row['product_quantity']}</td>
             <td>
             <a class="btn btn-danger" href = "..\..\kresources\ktemplates\backend\delete_product.php?id={$row['product_id']}"><span class = " glyphicon glyphicon-remove"></span></a>
@@ -424,7 +430,6 @@ echo $category_options;
 }
 //***************************************************Updating Products Code In Admin Page  ***************************************
 function update_product(){
-    //not fully functing as function yet still bugs in the the EDIT PAGE of the ADMIN PAGE!!!!!
 if(isset($_POST['update'])){
 
 $product_title         = escape_string($_POST['product_title']);

@@ -6,7 +6,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Ashley Muzuro Inc</p>
+                    <p>Copyright &copy; B21DCAT093</p>
                 </div>
             </div>
         </footer>

@@ -6,10 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="The ecommerce website was created in Dec 2020">
-    <meta name="author" content="Ashley Tendai Muzuro">
+    <meta name="author" content="B21DCAT093">
 
-    <title> Muzuro Ecommerce | Admin </title>
+    <title> B21DCAT093 | Admin </title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
